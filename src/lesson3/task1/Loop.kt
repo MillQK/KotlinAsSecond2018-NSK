@@ -169,7 +169,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean =
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    val xNormalize = x % (2 * Math.PI)
+    val xNormalize = (x % (2 * Math.PI) +  2 * Math.PI) % (2 * Math.PI)
     var res = 0.0
     var factN = 1
     var sign = 1
@@ -190,7 +190,7 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
-    val xNormalize = x % (2 * Math.PI)
+    val xNormalize = (x % (2 * Math.PI) +  2 * Math.PI) % (2 * Math.PI)
     var res = 0.0
     var factN = 0
     var sign = 1
