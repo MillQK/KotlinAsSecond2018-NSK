@@ -168,7 +168,7 @@ fun bestHighJump(jumps: String): Int {
             return -1
         } else {
             if (split[i+1].contains('+')) {
-                maxHigh = high
+                if (high > maxHigh) maxHigh = high
             }
         }
     }
