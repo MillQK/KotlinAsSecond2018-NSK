@@ -273,7 +273,7 @@ fun fromRoman(roman: String): Int {
 
     val mapSymb = mapOf('M' to 1000, 'D' to 500, 'C' to 100, 'L' to 50, 'X' to 10, 'V' to 5, 'I' to 1)
 
-    if (roman.any { !mapSymb.containsKey(it) }) return -1
+    if (roman.isBlank() || roman.any { !mapSymb.containsKey(it) }) return -1
 
     var result = 0
     val uRoman = roman.toUpperCase()
