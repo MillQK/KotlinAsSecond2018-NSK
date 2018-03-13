@@ -36,11 +36,12 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
 fun ageDescription(age: Int): String {
     val lastNum = age % 10
     val lastTwoNums = age % 100
-    if (lastNum >= 5 || lastNum == 0 || (lastTwoNums in 11..19)) return "$age лет"
 
-    if (lastNum == 1) return "$age год"
-
-    return "$age года"
+    return when {
+        lastNum >= 5 || lastNum == 0 || (lastTwoNums in 11..19) -> "$age лет"
+        lastNum == 1 -> "$age год"
+        else -> "$age года"
+    }
 }
 
 /**
@@ -59,11 +60,11 @@ fun timeForHalfWay(t1: Double, v1: Double,
     val pathLen = firstPart + secondPart + thirdPart
     val halfPath = pathLen / 2
 
-    if (halfPath <= firstPart) return halfPath / v1
-
-    if (halfPath <= firstPart + secondPart) return t1 + (halfPath - firstPart) / v2
-
-    return t1 + t2 + (halfPath - firstPart - secondPart) / v3
+    return when {
+        halfPath <= firstPart -> halfPath / v1
+        halfPath <= firstPart + secondPart -> t1 + (halfPath - firstPart) / v2
+        else -> t1 + t2 + (halfPath - firstPart - secondPart) / v3
+    }
 }
 
 /**
@@ -117,14 +118,14 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     if (a + b <= c || a + c <= b || b + c <= a) return -1
 
-    val max = maxOf(a, maxOf(b, c))
-    val min = minOf(a, minOf(b, c))
-    val middle = a + b + c - max - min
+    val (min, middle, max) = listOf(a, b, c).sorted()
 
-    if (max * max < min * min + middle * middle) return 0
-    if (max * max == min * min + middle * middle) return 1
-
-    return 2
+    return when {
+        max >= min + middle -> -1
+        max * max < min * min + middle * middle -> 0
+        max * max == min * min + middle * middle -> 1
+        else -> 2
+    }
 }
 
 /**
@@ -136,10 +137,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if (b < c || d < a) return -1
 
-    if (c <= a && b <= d) return b - a
-    if (a <= c && d <= b) return d - c
-
-    return if (a < c) b - c else d - a
+    return when {
+        b < c || d < a -> -1
+        c <= a && b <= d -> b - a
+        a <= c && d <= b -> d - c
+        a < c -> b - c
+        else -> d - a
+    }
 }
