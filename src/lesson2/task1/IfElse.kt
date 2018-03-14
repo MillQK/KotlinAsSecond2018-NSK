@@ -116,8 +116,6 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if (a + b <= c || a + c <= b || b + c <= a) return -1
-
     val (min, middle, max) = listOf(a, b, c).sorted()
 
     return when {
@@ -136,13 +134,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-
-    return when {
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
         b < c || d < a -> -1
         c <= a && b <= d -> b - a
         a <= c && d <= b -> d - c
         a < c -> b - c
         else -> d - a
     }
-}
+
