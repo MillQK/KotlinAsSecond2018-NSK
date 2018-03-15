@@ -116,13 +116,9 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     val deleteSymbols = listOf('-', '(', ')', ' ')
-    if (phone.any { !(deleteSymbols.contains(it) || it == '+' || it.isDigit()) }) return ""
+    if (phone.any { !(it in deleteSymbols || it == '+' || it.isDigit()) }) return ""
 
-    val sb = StringBuilder()
-    for (ch in phone) {
-        if (ch == '+' || ch.isDigit()) sb.append(ch)
-    }
-    return sb.toString()
+    return phone.filter { it == '+' || it.isDigit() }
 }
 
 
@@ -138,10 +134,11 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     val filtered = jumps.trim().split(" ").filter { it != "-" && it != "%" && !it.isBlank() }
-    if (filtered.isEmpty()) return -1
-    for (elem in filtered) if (elem.toIntOrNull() == null) return -1
 
-    return filtered.map { it.toInt() }.max()!!
+    return when {
+        filtered.isEmpty() || filtered.any { it.toIntOrNull() == null } -> -1
+        else -> filtered.map { it.toInt() }.max()!!
+    }
 }
 
 /**
@@ -162,12 +159,12 @@ fun bestHighJump(jumps: String): Int {
     if (split.size % 2 != 0) return -1
 
     var maxHigh = -1
-    for (i in 0..(split.size-1) step 2) {
+    for (i in 0..(split.size - 1) step 2) {
         val high = split[i].toIntOrNull()
         if (high == null) {
             return -1
         } else {
-            if (split[i+1].contains('+')) {
+            if ('+' in split[i + 1]) {
                 if (high > maxHigh) maxHigh = high
             }
         }
@@ -216,8 +213,8 @@ fun firstDuplicateIndex(str: String): Int {
     val split = str.split(" ")
 
     var wordIndex = 0
-    for (i in 0 until split.size-1) {
-        if (split[i].equals(split[i+1], true)) return wordIndex
+    for (i in 0 until split.size - 1) {
+        if (split[i].equals(split[i + 1], true)) return wordIndex
 
         wordIndex += split[i].length + 1
     }
