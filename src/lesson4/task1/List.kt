@@ -127,7 +127,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
     if (list.isEmpty()) return list
 
     val medium = list.sum() / list.size
-    for(i in list.indices) list[i] -= medium
+    for (i in list.indices) list[i] -= medium
     return list
 }
 
@@ -139,7 +139,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
 fun times(a: List<Double>, b: List<Double>): Double =
-        if (a.isEmpty() || b.isEmpty()) 0.0 else a.indices.sumByDouble { a[it]*b[it] }
+        if (a.isEmpty() || b.isEmpty()) 0.0 else a.zip(b) { aEl, bEl -> aEl * bEl }.sum()
 
 /**
  * Средняя
@@ -150,9 +150,12 @@ fun times(a: List<Double>, b: List<Double>): Double =
  * Значение пустого многочлена равно 0.0 при любом x.
  */
 fun polynom(p: List<Double>, x: Double): Double {
-    if (p.isEmpty()) return 0.0
     var pow = 0.0
-    return p.sumByDouble { it*Math.pow(x, pow++) }
+    var result = 0.0
+    for (elem in p) {
+        result += elem * Math.pow(x, pow++)
+    }
+    return result
 }
 
 /**
@@ -183,7 +186,7 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    val list = ArrayList<Int>()
+    val list = mutableListOf<Int>()
     var num = n
     for (i in 2..Math.sqrt(num.toDouble()).toInt()) {
         while (num % i == 0) {
