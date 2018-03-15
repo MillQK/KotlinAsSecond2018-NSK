@@ -95,6 +95,11 @@ fun fib(n: Int): Int {
  */
 fun lcm(m: Int, n: Int): Int {
     // lcm = ab/gcd
+
+    return m * n / gcd(m, n)
+}
+
+fun gcd(m: Int, n: Int) : Int {
     var a = maxOf(m, n)
     var b = minOf(m, n)
 
@@ -103,8 +108,7 @@ fun lcm(m: Int, n: Int): Int {
         a = b
         b = bTmp
     }
-
-    return m*n/a
+    return a
 }
 
 /**
@@ -113,10 +117,10 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2..n) {
+    for (i in 2..Math.sqrt(n.toDouble()).toInt()) {
         if (n % i == 0) return i
     }
-    return -1
+    return n
 }
 
 /**
@@ -125,10 +129,10 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    for (i in n-1 downTo 1) {
+    for (i in n - 1 downTo 1) {
         if (n % i == 0) return i
     }
-    return -1
+    return 1
 }
 
 /**
@@ -138,18 +142,7 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var a = maxOf(m, n)
-    var b = minOf(m, n)
-
-    while (b != 0) {
-        val bTmp = a % b
-        a = b
-        b = bTmp
-    }
-
-    return a == 1
-}
+fun isCoPrime(m: Int, n: Int): Boolean = gcd(m, n) == 1
 
 /**
  * Простая
@@ -235,9 +228,9 @@ fun isPalindrome(n: Int): Boolean = n == revert(n)
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
 fun hasDifferentDigits(n: Int): Boolean {
-    var num = n
+    var num = Math.abs(n)
 
-    while (Math.abs(num) >= 10) {
+    while (num >= 10) {
         if (num % 10 != (num / 10) % 10) return true
         num /= 10
     }
@@ -245,15 +238,7 @@ fun hasDifferentDigits(n: Int): Boolean {
     return false
 }
 
-fun tenPower(power: Int) : Int {
-    if (power == 0) return 1
-
-    var ten = 1
-    for (i in 1..power) {
-        ten *= 10
-    }
-    return ten
-}
+fun tenPower(power: Int) : Int = Math.pow(10.0, power.toDouble()).toInt()
 
 /**
  * Сложная
