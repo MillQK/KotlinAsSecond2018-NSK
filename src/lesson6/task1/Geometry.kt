@@ -110,7 +110,7 @@ fun diameter(vararg points: Point): Segment {
     var secondPoint = points[0]
 
     for (i in 0 until points.size - 1) {
-        for (j in i+1 until points.size) {
+        for (j in i + 1 until points.size) {
             val dist = points[i].distance(points[j])
             if (dist > maxDist) {
                 maxDist = dist
