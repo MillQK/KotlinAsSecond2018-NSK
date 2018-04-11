@@ -41,34 +41,7 @@ interface Matrix<E> {
 fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> {
     if (height <= 0 || width <= 0) throw IllegalArgumentException("Incorrect height: $height or width: $width")
 
-    return object : Matrix<E> {
-        val elems = MutableList(height * width) { e }
-
-        override val height: Int
-            get() = height
-
-        override val width: Int
-            get() = width
-
-        private fun toPosition(row: Int, column: Int): Int = row * width + column
-        private fun checkAndGetPosition(row: Int, column: Int) : Int {
-            val position = toPosition(row, column)
-            if (position !in elems.indices) throw IndexOutOfBoundsException("Wrong row or column")
-            return position
-        }
-
-        override fun get(row: Int, column: Int): E {
-            return elems[checkAndGetPosition(row, column)]
-        }
-
-        override fun get(cell: Cell): E = get(cell.row, cell.column)
-
-        override fun set(row: Int, column: Int, value: E) {
-            elems[checkAndGetPosition(row, column)] = value
-        }
-
-        override fun set(cell: Cell, value: E) = set(cell.row, cell.column, value)
-    }
+    return MatrixImpl(height, width, { e })
 }
 
 
@@ -109,7 +82,7 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, init: (In
             for (column in 0 until width) {
                 val thisElem = this[row, column]
                 val otherElem = other[row, column]
-                if (!(thisElem?.equals(other) ?: (otherElem == null))) {
+                if (!(thisElem?.equals(otherElem) ?: (otherElem == null))) {
                     return false
                 }
             }
@@ -125,6 +98,13 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, init: (In
             sb.appendln()
         }
         return sb.toString()
+    }
+
+    override fun hashCode(): Int {
+        var result = height
+        result = 31 * result + width
+        result = 31 * result + elems.hashCode()
+        return result
     }
 }
 
